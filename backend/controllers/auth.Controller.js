@@ -33,7 +33,7 @@ export const signupUser = async (req , res) =>{
 //Login User
 export const loginUser=async (req, res)=>{
     try{
-        const {name , password}=req.body;
+        const {email , password}=req.body;
         
          // check if user already exists
         const user=await User.findOne({email});
@@ -47,13 +47,24 @@ export const loginUser=async (req, res)=>{
         }
         //Genrate JWT Token
         const token =jwt.sign(
-            {userId:user._id,email:user.email},
+            {id:user._id,email:user.email},
             process.env.JWT_SECRET,
             {expiresIn:"1h"}
             
-        )
+        );
+        res.json({
+            message:"Login Successfully",
+            token,
+            user:{
+                id:user._id,
+                name:user.name,
+                email:user.email
+            }
+        })
     }catch(error){
+        console.log(error);
          res.status(500).json({message:"Server error"}, error);
     }
 };
+
 
