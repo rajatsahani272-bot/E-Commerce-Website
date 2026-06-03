@@ -26,16 +26,22 @@ export default function EditProduct() {
 
   const loadProduct = async () => {
     try {
-      const res = await api.get(`/products/${id}`);
-      setForm(res.data);
+      const res = await api.get("/products");
+
+      const product = res.data.find((p) => p._id === id);
+
+      if (product) {
+        setForm(product);
+      }
+
     } catch (error) {
-      console.error("Error loading product:", error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
     loadProduct();
-  }, [id]);
+  }, []);
 
   const handleChange = (e) => {
     setForm({
@@ -46,27 +52,35 @@ export default function EditProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+     console.log("ID:", id);
+  console.log("FORM:", form);
 
     try {
-      await api.put(`/products/edit/${id}`, form);
+      await api.put(`/products/update/${id}`, form);
 
       alert("Product updated successfully");
+
       navigate("/admin/products");
+
     } catch (error) {
-      console.error("Error updating product:", error);
-      alert("Failed to update product");
+      console.log("ERROR:", error.response?.data);
+    console.log("STATUS:", error.response?.status);
     }
   };
 
   return (
     <div className="max-w-lg mx-auto mt-10 bg-white p-6 shadow rounded">
-      <h2 className="text-2xl font-bold mb-6">Edit Product</h2>
+      <h2 className="text-2xl font-bold mb-6">
+        Edit Product
+      </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form 
+        onSubmit={handleSubmit}
+        className="space-y-3"
+      >
         {allowedFields.map((key) => (
           <input
             key={key}
-            type={key === "price" || key === "stock" ? "number" : "text"}
             name={key}
             value={form[key] || ""}
             onChange={handleChange}
@@ -77,10 +91,11 @@ export default function EditProduct() {
 
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           Update Product
         </button>
+
       </form>
     </div>
   );
