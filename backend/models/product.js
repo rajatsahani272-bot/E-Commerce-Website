@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 
 
-const productScheam = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     title:{
         type:String,
         required:true,
@@ -33,4 +33,4 @@ const productScheam = new mongoose.Schema({
 );
 
 
-export default mongoose.model('Product',productScheam);
+export default mongoose.model('Product',productSchema);
