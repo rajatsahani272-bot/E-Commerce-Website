@@ -10,6 +10,7 @@ import orderRoutes from './routes/order.js';
 
 
 dotenv.config();
+connectDB();
 
 const app=express();
 
@@ -27,8 +28,8 @@ app.get("/",(req, res)=>{
     res.send("API is working");
 })
 
-app.listen(5001,()=>{
-    console.log("Server is running at port 5001");
-});
+const PORT = process.env.PORT || 5000;
 
-connectDB();
+app.listen(PORT,()=>{
+ console.log(`Server running on ${PORT}`);
+});
