@@ -1,7 +1,9 @@
 import { useState } from "react";
 import api from "../api/axios.js";
+import { useNavigate } from "react-router";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -23,7 +25,7 @@ export default function Signup() {
       
        // Redirect to HOme page after 1 second
         setTimeout(()=>{
-            navigate("/auth/login");
+            navigate("/login");
         },1000);
     } catch (err) {
       setMsg(err.response?.data?.message || "An error occurred");

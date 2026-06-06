@@ -23,6 +23,7 @@ export default function Login() {
         //Save Token to localStorage
         localStorage.setItem("token",res.data.token);
         localStorage.setItem("userId",res.data.user.id);
+        localStorage.setItem("role", res.data.user.role);
         setMsg("Login Successfully");
         
         // Redirect to HOme page after 1 second

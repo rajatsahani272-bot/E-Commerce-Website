@@ -60,6 +60,7 @@ export default function Home() {
           <option value="Laptops">Laptops</option>
           <option value="Mobiles">Mobiles</option>
           <option value="Tablets">Tablets</option>
+          <option value="Perfume">Perfume</option>
         </select>
       </div>
 

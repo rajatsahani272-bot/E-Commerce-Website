@@ -1,63 +1,70 @@
-import {Link, useNavigate} from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import api from "../api/axios";
 
 export default function Navbar() {
-    const navigate = useNavigate();
-    const [cartCount, setCartCount] = useState(0);
-    const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
+  const userId = localStorage.getItem("userId");
+  const role = localStorage.getItem("role");
 
-    useEffect(() => {
-        const loadCart = async () => {
-            if (!userId) return setCartCount(0);
+  useEffect(() => {
+    const loadCart = async () => {
+      if (!userId) return setCartCount(0);
 
-            const res = await api.get(`/cart/${userId}`);
-            const total = res.data.items.reduce(
-                (sum,item) => sum + item.quantity, 0
-            );
-            setCartCount(total);
-        }
-        loadCart();
-        window.addEventListener("cartUpdated", loadCart);
-        
-        return () => {
-            window.removeEventListener("cartUpdated", loadCart);
-        }
-    }, [userId]);
+      const res = await api.get(`/cart/${userId}`);
+      const total = res.data.items.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
+      );
+      setCartCount(total);
+    };
+    loadCart();
+    window.addEventListener("cartUpdated", loadCart);
 
-    const logout = () => {
-        localStorage.clear();
-        setCartCount(0);
-        navigate("/login");
-    }
+    return () => {
+      window.removeEventListener("cartUpdated", loadCart);
+    };
+  }, [userId]);
 
-    return (
-        <nav className="flex justify-between p-4 shadow bg-black text-white">
-            <Link to= "/" className="font-bold text-xl">Shopaholic World</Link>
+  const logout = () => {
+    localStorage.clear();
+    setCartCount(0);
+    navigate("/login");
+  };
 
-            <div className="flex gap-4 items-center">
-                <Link to="/cart" className="relative text-xl">
-                 🛒
-                 {
-                    cartCount > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1 rounded">
-                            {cartCount}
-                        </span>
-                    )
-                 }
-                </Link>
+  return (
+    <nav className="flex justify-between p-4 shadow bg-black text-white">
+      <Link to="/" className="font-bold text-xl">
+        Shopaholic World
+      </Link>
 
-                {
-                    !userId ?(
-                        <>
-                            <Link to="/login" className="text-lg">Login</Link>
-                            <Link to="/signup" className="text-lg">Signup</Link>
-                        </>
-                    ) : (
-                        <button onClick={logout} className="text-lg">Logout</button>
-                    )
-                }
-            </div>
-        </nav>
-    )
+      <div className="flex gap-4 items-center">
+        {role === "admin" && <Link to="/admin/products">Admin</Link>}
+        <Link to="/cart" className="relative text-xl">
+          🛒
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1 rounded">
+              {cartCount}
+            </span>
+          )}
+        </Link>
+
+        {!userId ? (
+          <>
+            <Link to="/login" className="text-lg">
+              Login
+            </Link>
+            <Link to="/singup" className="text-lg">
+              Signup
+            </Link>
+          </>
+        ) : (
+          <button onClick={logout} className="text-lg">
+            Logout
+          </button>
+        )}
+      </div>
+    </nav>
+  );
 }

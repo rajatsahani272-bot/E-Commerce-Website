@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema =new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -18,11 +18,16 @@ const userSchema =new mongoose.Schema({
         required: [true, "Password is required for creating an account"],
         minlength: [6, "Password should contain more than six characters"],
 
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
     }
 }
-,{
-    timestamps: true
-});
+    , {
+        timestamps: true
+    });
 
 
-export default mongoose.model("User" , userSchema);
+export default mongoose.model("User", userSchema);
