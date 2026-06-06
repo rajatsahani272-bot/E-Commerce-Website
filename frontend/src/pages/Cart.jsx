@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import api from "../api/axios.js";
+import { useNavigate } from "react-router";
 
 export default function Cart() {
   const userId = localStorage.getItem("userId");
   const [cart, setCart] = useState(null);
+  const navigate=useNavigate();
 
   // Load cart data
   const loadCart = async () => {
@@ -20,9 +22,7 @@ export default function Cart() {
     await api.post(`/cart/remove`, { userId, productId });
     loadCart();
 
-    window.dispatchEvent(
-      new Event("cartUpdated")
-    );
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   // Update item quantity
@@ -36,20 +36,18 @@ export default function Cart() {
 
     loadCart();
 
-    window.dispatchEvent(
-      new Event("cartUpdated")
-    );
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   if (!cart) {
     return <div>Loading...</div>;
   }
 
-  const total = cart.items?.reduce(
-    (sum,item)=>
-    sum + item.productId.price * item.quantity,
-    0
-  ) || 0;
+  const total =
+    cart.items?.reduce(
+      (sum, item) => sum + item.productId.price * item.quantity,
+      0,
+    ) || 0;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -63,9 +61,7 @@ export default function Cart() {
             key={item.productId._id}
             className="flex items-center justify-between p-4 border rounded"
           >
-
             <div className="flex items-center gap-4">
-
               <img
                 src={item.productId.image}
                 alt={item.productId.title}
@@ -81,45 +77,25 @@ export default function Cart() {
                   ${item.productId.price?.toFixed(2)}
                 </p>
               </div>
-
             </div>
 
-
             <div className="flex items-center gap-2">
-
               <button
-                onClick={() => 
-                  updateQty(
-                    item.productId._id,
-                    item.quantity - 1
-                  )
-                }
+                onClick={() => updateQty(item.productId._id, item.quantity - 1)}
               >
                 -
               </button>
 
-
               <span>{item.quantity}</span>
 
-
               <button
-                onClick={() =>
-                  updateQty(
-                    item.productId._id,
-                    item.quantity + 1
-                  )
-                }
+                onClick={() => updateQty(item.productId._id, item.quantity + 1)}
               >
                 +
               </button>
-
             </div>
 
-
-            <p>
-              ${((item.productId.price || 0) * item.quantity).toFixed(2)}
-            </p>
-
+            <p>${((item.productId.price || 0) * item.quantity).toFixed(2)}</p>
 
             <button
               onClick={() => removeItem(item.productId._id)}
@@ -127,16 +103,15 @@ export default function Cart() {
             >
               Remove
             </button>
-
-
           </div>
         ))
       )}
 
-      <h2 className="text-xl font-bold mt-6">
-        Total: ${total.toFixed(2)}
-      </h2>
-
+      <h2 className="text-xl font-bold mt-6">Total: ${total.toFixed(2)}</h2>
+      <button onClick={()=>navigate("/Checkout-address")}
+      className="w-full bg-blue-500 text-white p-2 rounded">
+        Procced to Checkout
+      </button>
     </div>
   );
 }
