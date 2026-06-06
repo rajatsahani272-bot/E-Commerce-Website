@@ -12,6 +12,8 @@ export default function Home() {
       `/products?search=${search}&category=${category}`
     );
     setProducts(res.data);
+      console.log("URL:", `/products?search=${search}&category=${category}`);
+  console.log("DATA:", res.data);
   };
 
   useEffect(() => {
@@ -57,10 +59,11 @@ export default function Home() {
                focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">All Categories</option>
-          <option value="Laptops">Laptops</option>
-          <option value="Mobiles">Mobiles</option>
-          <option value="Tablets">Tablets</option>
+          <option value="Laptop">Laptop</option>
+          <option value="Mobile">Mobiles</option>
+          <option value="Tablet">Tablets</option>
           <option value="Perfume">Perfume</option>
+          <option value="Watch">Watch</option>
         </select>
       </div>
 

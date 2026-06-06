@@ -19,11 +19,12 @@ export const createProduct = async (req, res) => {
 // Get all products
 export const getProducts = async (req, res) => {
     try {
-
         const { search, category } = req.query;
 
         let filter = {};
-
+        
+        
+        
         if(search){
             filter.title = {
                 $regex: search,
@@ -37,7 +38,6 @@ export const getProducts = async (req, res) => {
                 $options: "i"
             };
         }
-
 
         const products = await Product
             .find(filter)
