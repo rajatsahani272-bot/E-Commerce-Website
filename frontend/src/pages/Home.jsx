@@ -12,8 +12,6 @@ export default function Home() {
       `/products?search=${search}&category=${category}`
     );
     setProducts(res.data);
-      console.log("URL:", `/products?search=${search}&category=${category}`);
-  console.log("DATA:", res.data);
   };
 
   useEffect(() => {

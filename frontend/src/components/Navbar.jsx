@@ -40,7 +40,6 @@ export default function Navbar() {
       </Link>
 
       <div className="flex gap-4 items-center">
-        {role === "admin" && <Link to="/admin/products">Admin</Link>}
         <Link to="/cart" className="relative text-xl">
           🛒
           {cartCount > 0 && (
